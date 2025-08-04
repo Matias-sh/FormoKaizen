@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#f2f2f2"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="32dp">
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/ic_tarjeta_roja"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/txtWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Bienvenido a FormoKaizen!"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <Button
+        android:id="@+id/btnNuevaTarjeta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear nueva Tarjeta Roja"
+        android:backgroundTint="#ff3333"
+        android:textColor="#fff"
+        android:layout_marginBottom="18dp"/>
+
+    <Button
+        android:id="@+id/btnVerTarjetas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ver Tarjetas"
+        android:backgroundTint="#0066cc"
+        android:textColor="#fff"
+        android:layout_marginBottom="18dp"/>
+
+    <Button
+        android:id="@+id/btnSalir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Salir"
+        android:backgroundTint="#AAAAAA"
+        android:textColor="#fff"
+        android:layout_marginBottom="10dp"/>
+
+</LinearLayout>
