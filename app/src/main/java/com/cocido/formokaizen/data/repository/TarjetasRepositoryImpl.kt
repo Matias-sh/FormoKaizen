@@ -37,7 +37,7 @@ class TarjetasRepositoryImpl @Inject constructor(
         return flowOf(Resource.Success(emptyList()))
     }
 
-    override suspend fun getTarjetasByCategory(categoryId: Int): Flow<Resource<List<TarjetaRoja>>> {
+    override suspend fun getTarjetasBySector(sector: String): Flow<Resource<List<TarjetaRoja>>> {
         return flowOf(Resource.Success(emptyList()))
     }
 
@@ -57,22 +57,19 @@ class TarjetasRepositoryImpl @Inject constructor(
         // Crear una tarjeta ficticia basada en el request
         val tarjeta = TarjetaRoja(
             id = 1,
-            code = "TR-001",
-            title = request.title,
-            description = request.description,
-            category = Category(request.categoryId, "Categoria", "Descripcion", "#FF0000", "icon", true, emptyList(), null, "", 0, 0),
-            workArea = null,
-            status = TarjetaStatus.OPEN,
-            priority = request.priority,
+            numero = request.numero,
+            fecha = request.fecha,
             sector = request.sector,
+            descripcion = request.descripcion,
             motivo = request.motivo,
+            quienLoHizo = request.quienLoHizo,
             destinoFinal = request.destinoFinal,
+            fechaFinal = request.fechaFinal,
             createdBy = User(1, "user", "user@test.com", "User", "Test", UserRole.USER, null, null, null, null, null, true, ""),
             assignedTo = null,
             approvedBy = null,
-            estimatedResolutionDate = request.estimatedResolutionDate,
-            actualResolutionDate = null,
-            resolutionNotes = null,
+            status = TarjetaStatus.OPEN,
+            priority = request.priority,
             images = emptyList(),
             comments = emptyList(),
             history = emptyList(),
@@ -128,5 +125,11 @@ class TarjetasRepositoryImpl @Inject constructor(
 
     override suspend fun syncTarjetas(): Flow<Resource<Unit>> {
         return flowOf(Resource.Success(Unit))
+    }
+
+    override suspend fun validateNumero(numero: String, excludeId: Int?): Flow<Resource<Boolean>> {
+        // Mock validation - numero is valid if it doesn't start with "0000"
+        val isValid = !numero.startsWith("0000")
+        return flowOf(Resource.Success(isValid))
     }
 }

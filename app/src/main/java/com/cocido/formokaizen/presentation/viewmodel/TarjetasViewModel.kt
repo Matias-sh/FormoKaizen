@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cocido.formokaizen.domain.entities.CreateTarjetaRequest
 import com.cocido.formokaizen.domain.entities.TarjetaRoja
-import com.cocido.formokaizen.domain.entities.Category
 import com.cocido.formokaizen.domain.repository.TarjetasRepository
-import com.cocido.formokaizen.domain.repository.CategoriesRepository
 import com.cocido.formokaizen.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,15 +15,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TarjetasViewModel @Inject constructor(
-    private val tarjetasRepository: TarjetasRepository,
-    private val categoriesRepository: CategoriesRepository
+    private val tarjetasRepository: TarjetasRepository
 ) : ViewModel() {
     
     private val _tarjetas = MutableStateFlow<Resource<List<TarjetaRoja>>>(Resource.Idle())
     val tarjetas: StateFlow<Resource<List<TarjetaRoja>>> = _tarjetas.asStateFlow()
     
-    private val _categories = MutableStateFlow<Resource<List<Category>>>(Resource.Idle())
-    val categories: StateFlow<Resource<List<Category>>> = _categories.asStateFlow()
+    private val _numeroValidation = MutableStateFlow<Resource<Boolean>>(Resource.Idle())
+    val numeroValidation: StateFlow<Resource<Boolean>> = _numeroValidation.asStateFlow()
     
     private val _createTarjetaState = MutableStateFlow<Resource<TarjetaRoja>>(Resource.Idle())
     val createTarjetaState: StateFlow<Resource<TarjetaRoja>> = _createTarjetaState.asStateFlow()
@@ -38,7 +35,6 @@ class TarjetasViewModel @Inject constructor(
     
     init {
         loadTarjetas()
-        loadCategories()
     }
     
     fun loadTarjetas() {
@@ -57,10 +53,10 @@ class TarjetasViewModel @Inject constructor(
         }
     }
     
-    fun loadCategories() {
+    fun validateNumero(numero: String, excludeId: Int? = null) {
         viewModelScope.launch {
-            categoriesRepository.getAllCategories().collect { resource ->
-                _categories.value = resource
+            tarjetasRepository.validateNumero(numero, excludeId).collect { resource ->
+                _numeroValidation.value = resource
             }
         }
     }
@@ -158,9 +154,9 @@ class TarjetasViewModel @Inject constructor(
         }
     }
     
-    fun filterTarjetasByCategory(categoryId: Int) {
+    fun filterTarjetasBySector(sector: String) {
         viewModelScope.launch {
-            tarjetasRepository.getTarjetasByCategory(categoryId).collect { resource ->
+            tarjetasRepository.getTarjetasBySector(sector).collect { resource ->
                 _tarjetas.value = resource
             }
         }
@@ -180,5 +176,9 @@ class TarjetasViewModel @Inject constructor(
     
     fun resetUpdateTarjetaState() {
         _updateTarjetaState.value = Resource.Idle()
+    }
+    
+    fun resetNumeroValidation() {
+        _numeroValidation.value = Resource.Idle()
     }
 }

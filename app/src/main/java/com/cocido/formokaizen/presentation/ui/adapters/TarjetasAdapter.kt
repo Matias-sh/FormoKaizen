@@ -48,25 +48,21 @@ class TarjetasAdapter(
         
         fun bind(tarjeta: TarjetaRoja) {
             with(binding) {
-                // Basic info
-                tvTitle.text = tarjeta.title
-                tvDescription.text = tarjeta.description
-                tvId.text = "#${tarjeta.id.toString().padStart(3, '0')}"
+                // Basic info based on new model
+                tvTitle.text = "N° ${tarjeta.numero}"
+                tvDescription.text = tarjeta.descripcion
+                tvId.text = tarjeta.sector
                 
-                // Author and date
-                tvAuthor.text = "${tarjeta.createdBy?.firstName} ${tarjeta.createdBy?.lastName}"
-                tvDate.text = dateFormat.format(Date(tarjeta.createdAt.toLongOrNull() ?: System.currentTimeMillis()))
+                // Author and date from new fields
+                tvAuthor.text = tarjeta.quienLoHizo
+                tvDate.text = tarjeta.fecha
                 
-                // Priority indicator and badge
+                // Priority indicator
                 setPriorityIndicator(tarjeta.priority)
                 
-                // Category chip
-                tarjeta.category?.let { category ->
-                    chipCategory.text = category.name
-                    chipCategory.visibility = View.VISIBLE
-                } ?: run {
-                    chipCategory.visibility = View.GONE
-                }
+                // Sector chip (replacing category)
+                chipCategory.text = tarjeta.sector
+                chipCategory.visibility = View.VISIBLE
                 
                 // Status chip
                 setStatusChip(tarjeta.status)

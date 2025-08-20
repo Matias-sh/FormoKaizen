@@ -24,31 +24,83 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!-- Header with Number and Date -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/txtNumero"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#ff3333"
+                android:text="N° 001" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/txtFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="#888"
+                android:text="01/01/2024" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/txtSector"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="#ff3333"
-            android:text="Sector"/>
+            android:textSize="14sp"
+            android:textColor="#222"
+            android:text="Sector"
+            android:layout_marginBottom="2dp"/>
 
         <TextView
             android:id="@+id/txtDescripcion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Descripción"
-            android:textSize="14sp"
-            android:textColor="#222"
-            android:layout_marginTop="2dp"/>
-
-        <TextView
-            android:id="@+id/txtMotivo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Motivo"
             android:textSize="13sp"
-            android:textColor="#888"
-            android:layout_marginTop="2dp"/>
+            android:textColor="#555"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginBottom="2dp"/>
+
+        <!-- Bottom info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtQuienLoHizo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quién lo hizo"
+                android:textSize="12sp"
+                android:textColor="#888" />
+
+            <TextView
+                android:id="@+id/txtFechaFinal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Final: 15/01/2024"
+                android:textSize="12sp"
+                android:textColor="#888"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

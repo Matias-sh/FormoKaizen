@@ -20,7 +20,7 @@ interface TarjetasRepository {
     suspend fun getAllTarjetas(): Flow<Resource<List<TarjetaRoja>>>
     suspend fun getMyTarjetas(): Flow<Resource<List<TarjetaRoja>>>
     suspend fun getTarjetasByStatus(status: String): Flow<Resource<List<TarjetaRoja>>>
-    suspend fun getTarjetasByCategory(categoryId: Int): Flow<Resource<List<TarjetaRoja>>>
+    suspend fun getTarjetasBySector(sector: String): Flow<Resource<List<TarjetaRoja>>>
     suspend fun searchTarjetas(query: String): Flow<Resource<List<TarjetaRoja>>>
     
     suspend fun getTarjetaById(id: Int): Flow<Resource<TarjetaRoja>>
@@ -39,4 +39,7 @@ interface TarjetasRepository {
     // Offline support
     fun getTarjetasOffline(): Flow<List<TarjetaRoja>>
     suspend fun syncTarjetas(): Flow<Resource<Unit>>
+    
+    // Validation
+    suspend fun validateNumero(numero: String, excludeId: Int? = null): Flow<Resource<Boolean>>
 }

@@ -36,8 +36,8 @@ interface TarjetasDao {
     fun getTarjetasByPriority(priority: String): Flow<List<TarjetaRojaWithRelations>>
     
     @Transaction
-    @Query("SELECT * FROM tarjetas_rojas WHERE categoryId = :categoryId ORDER BY createdAt DESC")
-    fun getTarjetasByCategory(categoryId: Int): Flow<List<TarjetaRojaWithRelations>>
+    @Query("SELECT * FROM tarjetas_rojas WHERE sector LIKE '%' || :sector || '%' ORDER BY createdAt DESC")
+    fun getTarjetasBySector(sector: String): Flow<List<TarjetaRojaWithRelations>>
     
     @Transaction
     @Query("SELECT * FROM tarjetas_rojas WHERE assignedToId = :userId ORDER BY createdAt DESC")
@@ -50,9 +50,11 @@ interface TarjetasDao {
     @Transaction
     @Query("""
         SELECT * FROM tarjetas_rojas 
-        WHERE title LIKE '%' || :search || '%' 
-           OR description LIKE '%' || :search || '%' 
+        WHERE numero LIKE '%' || :search || '%' 
+           OR descripcion LIKE '%' || :search || '%' 
            OR sector LIKE '%' || :search || '%'
+           OR motivo LIKE '%' || :search || '%'
+           OR quienLoHizo LIKE '%' || :search || '%'
         ORDER BY createdAt DESC
     """)
     fun searchTarjetas(search: String): Flow<List<TarjetaRojaWithRelations>>
@@ -116,8 +118,8 @@ interface TarjetasDao {
     @Query("SELECT COUNT(*) FROM tarjetas_rojas WHERE priority = :priority")
     suspend fun getTarjetasCountByPriority(priority: String): Int
     
-    @Query("SELECT COUNT(*) FROM tarjetas_rojas WHERE categoryId = :categoryId")
-    suspend fun getTarjetasCountByCategory(categoryId: Int): Int
+    @Query("SELECT COUNT(*) FROM tarjetas_rojas WHERE sector = :sector")
+    suspend fun getTarjetasCountBySector(sector: String): Int
     
     @Query("""
         SELECT COUNT(*) FROM tarjetas_rojas 
@@ -136,4 +138,11 @@ interface TarjetasDao {
     
     @Query("DELETE FROM tarjeta_history")
     suspend fun clearHistory()
+    
+    // Check if numero already exists
+    @Query("SELECT COUNT(*) FROM tarjetas_rojas WHERE numero = :numero")
+    suspend fun existsByNumero(numero: String): Int
+    
+    @Query("SELECT COUNT(*) FROM tarjetas_rojas WHERE numero = :numero AND id != :excludeId")
+    suspend fun existsByNumeroExcludingId(numero: String, excludeId: Int): Int
 }

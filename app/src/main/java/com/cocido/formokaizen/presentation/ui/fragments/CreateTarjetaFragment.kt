@@ -40,9 +40,6 @@ class CreateTarjetaFragment : Fragment() {
     
     private val tarjetasViewModel: TarjetasViewModel by viewModels()
     
-    private var selectedCategory: Category? = null
-    private var categories: List<Category> = emptyList()
-    
     private var currentPhotoPath: String = ""
     private val selectedPhotos = mutableListOf<String>()
     
@@ -90,7 +87,8 @@ class CreateTarjetaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         
         setupClickListeners()
-        setupCategoryDropdown()
+        setupDatePickers()
+        setupValidation()
         observeViewModel()
     }
     
@@ -112,36 +110,71 @@ class CreateTarjetaFragment : Fragment() {
         }
     }
     
-    private fun setupCategoryDropdown() {
-        // Observe categories from ViewModel
-        viewLifecycleOwner.lifecycleScope.launch {
-            tarjetasViewModel.categories.collect { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        categories = resource.data ?: emptyList()
-                        setupCategoryAdapter()
-                    }
-                    is Resource.Error -> {
-                        Toast.makeText(context, "Error al cargar categorías", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {}
-                }
+    private fun setupDatePickers() {
+        // Set current date as default for fecha
+        val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+        binding.etFecha.setText(currentDate)
+        
+        // Set up date picker for fecha field
+        binding.etFecha.setOnClickListener {
+            showDatePicker { date ->
+                binding.etFecha.setText(date)
+            }
+        }
+        
+        // Set up date picker for fechaFinal field
+        binding.etFechaFinal.setOnClickListener {
+            showDatePicker { date ->
+                binding.etFechaFinal.setText(date)
             }
         }
     }
     
-    private fun setupCategoryAdapter() {
-        val categoryNames = categories.map { it.name }
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            categoryNames
-        )
+    private fun showDatePicker(onDateSelected: (String) -> Unit) {
+        val calendar = java.util.Calendar.getInstance()
+        val year = calendar.get(java.util.Calendar.YEAR)
+        val month = calendar.get(java.util.Calendar.MONTH)
+        val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
         
-        binding.actvCategory.setAdapter(adapter)
-        binding.actvCategory.setOnItemClickListener { _, _, position, _ ->
-            selectedCategory = categories[position]
+        val datePickerDialog = android.app.DatePickerDialog(
+            requireContext(),
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val formattedDate = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear)
+                onDateSelected(formattedDate)
+            },
+            year, month, day
+        )
+        datePickerDialog.show()
+    }
+    
+    private fun setupValidation() {
+        // Real-time validation for numero field
+        binding.etNumero.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val numero = binding.etNumero.text.toString().trim()
+                if (numero.isNotEmpty()) {
+                    validateNumeroUniqueness(numero)
+                }
+            }
         }
+        
+        // Auto-generate numero if empty on focus
+        binding.etNumero.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && binding.etNumero.text.toString().isEmpty()) {
+                generateUniqueNumero()
+            }
+        }
+    }
+    
+    private fun validateNumeroUniqueness(numero: String) {
+        tarjetasViewModel.validateNumero(numero)
+    }
+    
+    private fun generateUniqueNumero() {
+        // Generate a simple number based on timestamp
+        val timestamp = System.currentTimeMillis()
+        val numero = "TR${timestamp.toString().takeLast(6)}"
+        binding.etNumero.setText(numero)
     }
     
     private fun checkCameraPermissionAndTakePhoto() {
@@ -198,10 +231,14 @@ class CreateTarjetaFragment : Fragment() {
     }
     
     private fun validateAndCreateTarjeta() {
-        val title = binding.etTitle.text.toString().trim()
-        val description = binding.etDescription.text.toString().trim()
+        val numero = binding.etNumero.text.toString().trim()
+        val fecha = binding.etFecha.text.toString().trim()
         val sector = binding.etSector.text.toString().trim()
-        val rootCause = binding.etRootCause.text.toString().trim()
+        val descripcion = binding.etDescripcion.text.toString().trim()
+        val motivo = binding.etMotivo.text.toString().trim()
+        val quienLoHizo = binding.etQuienLoHizo.text.toString().trim()
+        val destinoFinal = binding.etDestinoFinal.text.toString().trim()
+        val fechaFinal = binding.etFechaFinal.text.toString().trim()
         
         // Clear previous errors
         clearErrors()
@@ -209,23 +246,38 @@ class CreateTarjetaFragment : Fragment() {
         // Validate required fields
         var isValid = true
         
-        if (title.isEmpty()) {
-            binding.tilTitle.error = "El título es requerido"
+        if (numero.isEmpty()) {
+            binding.tilNumero.error = "El número es requerido"
             isValid = false
         }
         
-        if (description.isEmpty()) {
-            binding.tilDescription.error = "La descripción es requerida"
-            isValid = false
-        }
-        
-        if (selectedCategory == null) {
-            binding.tilCategory.error = "Seleccione una categoría"
+        if (fecha.isEmpty()) {
+            binding.tilFecha.error = "La fecha es requerida"
             isValid = false
         }
         
         if (sector.isEmpty()) {
             binding.tilSector.error = "El sector es requerido"
+            isValid = false
+        }
+        
+        if (descripcion.isEmpty()) {
+            binding.tilDescripcion.error = "La descripción es requerida"
+            isValid = false
+        }
+        
+        if (motivo.isEmpty()) {
+            binding.tilMotivo.error = "El motivo es requerido"
+            isValid = false
+        }
+        
+        if (quienLoHizo.isEmpty()) {
+            binding.tilQuienLoHizo.error = "Este campo es requerido"
+            isValid = false
+        }
+        
+        if (destinoFinal.isEmpty()) {
+            binding.tilDestinoFinal.error = "El destino final es requerido"
             isValid = false
         }
         
@@ -238,17 +290,17 @@ class CreateTarjetaFragment : Fragment() {
         
         // Create tarjeta request
         val request = CreateTarjetaRequest(
-            title = title,
-            description = description,
-            categoryId = selectedCategory!!.id,
-            workAreaId = null, // No tenemos work area seleccionada por ahora
-            priority = priority,
+            numero = numero,
+            fecha = fecha,
             sector = sector,
-            motivo = description, // Usar description como motivo por ahora
-            destinoFinal = "TBD", // To be determined
-            estimatedResolutionDate = null,
+            descripcion = descripcion,
+            motivo = motivo,
+            quienLoHizo = quienLoHizo,
+            destinoFinal = destinoFinal,
+            fechaFinal = if (fechaFinal.isEmpty()) null else fechaFinal,
+            priority = priority,
             assignedToId = null,
-            imageUris = selectedPhotos.map { it.toString() }
+            imageUris = selectedPhotos
         )
         
         // Create tarjeta
@@ -266,11 +318,14 @@ class CreateTarjetaFragment : Fragment() {
     }
     
     private fun clearErrors() {
-        binding.tilTitle.error = null
-        binding.tilDescription.error = null
-        binding.tilCategory.error = null
+        binding.tilNumero.error = null
+        binding.tilFecha.error = null
         binding.tilSector.error = null
-        binding.tilRootCause.error = null
+        binding.tilDescripcion.error = null
+        binding.tilMotivo.error = null
+        binding.tilQuienLoHizo.error = null
+        binding.tilDestinoFinal.error = null
+        binding.tilFechaFinal.error = null
     }
     
     private fun observeViewModel() {
@@ -312,11 +367,14 @@ class CreateTarjetaFragment : Fragment() {
         binding.btnCancel.isEnabled = !show
         
         // Disable form inputs
-        binding.etTitle.isEnabled = !show
-        binding.etDescription.isEnabled = !show
-        binding.actvCategory.isEnabled = !show
+        binding.etNumero.isEnabled = !show
+        binding.etFecha.isEnabled = !show
         binding.etSector.isEnabled = !show
-        binding.etRootCause.isEnabled = !show
+        binding.etDescripcion.isEnabled = !show
+        binding.etMotivo.isEnabled = !show
+        binding.etQuienLoHizo.isEnabled = !show
+        binding.etDestinoFinal.isEnabled = !show
+        binding.etFechaFinal.isEnabled = !show
         binding.btnTakePhoto.isEnabled = !show
         binding.btnSelectPhoto.isEnabled = !show
         

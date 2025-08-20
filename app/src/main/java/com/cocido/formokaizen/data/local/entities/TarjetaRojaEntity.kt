@@ -19,39 +19,37 @@ import com.cocido.formokaizen.domain.entities.*
             onDelete = ForeignKey.SET_NULL
         ),
         ForeignKey(
-            entity = CategoryEntity::class,
+            entity = UserEntity::class,
             parentColumns = ["id"],
-            childColumns = ["categoryId"],
-            onDelete = ForeignKey.CASCADE
+            childColumns = ["approvedById"],
+            onDelete = ForeignKey.SET_NULL
         )
     ],
     indices = [
         Index(value = ["createdById"]),
         Index(value = ["assignedToId"]),
-        Index(value = ["categoryId"]),
+        Index(value = ["approvedById"]),
         Index(value = ["status"]),
-        Index(value = ["priority"])
+        Index(value = ["priority"]),
+        Index(value = ["numero"], unique = true)
     ]
 )
 data class TarjetaRojaEntity(
     @PrimaryKey
     val id: Int,
-    val code: String,
-    val title: String,
-    val description: String,
-    val categoryId: Int,
-    val workAreaId: Int?,
-    val status: String,
-    val priority: String,
+    val numero: String,
+    val fecha: String,
     val sector: String,
+    val descripcion: String,
     val motivo: String,
+    val quienLoHizo: String,
     val destinoFinal: String,
+    val fechaFinal: String?,
     val createdById: Int,
     val assignedToId: Int?,
     val approvedById: Int?,
-    val estimatedResolutionDate: String?,
-    val actualResolutionDate: String?,
-    val resolutionNotes: String?,
+    val status: String,
+    val priority: String,
     val createdAt: String,
     val updatedAt: String,
     val approvedAt: String?,
@@ -83,17 +81,6 @@ data class TarjetaRojaWithRelations(
     )
     val approvedBy: UserEntity?,
     
-    @Relation(
-        parentColumn = "categoryId",
-        entityColumn = "id"
-    )
-    val category: CategoryEntity,
-    
-    @Relation(
-        parentColumn = "workAreaId",
-        entityColumn = "id"
-    )
-    val workArea: WorkAreaEntity?,
     
     @Relation(
         parentColumn = "id",
@@ -191,11 +178,17 @@ data class TarjetaHistoryEntity(
 fun TarjetaRojaWithRelations.toDomainModel(): TarjetaRoja {
     return TarjetaRoja(
         id = tarjeta.id,
-        code = tarjeta.code,
-        title = tarjeta.title,
-        description = tarjeta.description,
-        category = category.toDomainModel(emptyList()), // Work areas loaded separately
-        workArea = workArea?.toDomainModel(),
+        numero = tarjeta.numero,
+        fecha = tarjeta.fecha,
+        sector = tarjeta.sector,
+        descripcion = tarjeta.descripcion,
+        motivo = tarjeta.motivo,
+        quienLoHizo = tarjeta.quienLoHizo,
+        destinoFinal = tarjeta.destinoFinal,
+        fechaFinal = tarjeta.fechaFinal,
+        createdBy = createdBy.toDomainModel(),
+        assignedTo = assignedTo?.toDomainModel(),
+        approvedBy = approvedBy?.toDomainModel(),
         status = when (tarjeta.status.uppercase()) {
             "OPEN" -> TarjetaStatus.OPEN
             "PENDING_APPROVAL" -> TarjetaStatus.PENDING_APPROVAL
@@ -213,15 +206,6 @@ fun TarjetaRojaWithRelations.toDomainModel(): TarjetaRoja {
             "CRITICAL" -> TarjetaPriority.CRITICAL
             else -> TarjetaPriority.MEDIUM
         },
-        sector = tarjeta.sector,
-        motivo = tarjeta.motivo,
-        destinoFinal = tarjeta.destinoFinal,
-        createdBy = createdBy.toDomainModel(),
-        assignedTo = assignedTo?.toDomainModel(),
-        approvedBy = approvedBy?.toDomainModel(),
-        estimatedResolutionDate = tarjeta.estimatedResolutionDate,
-        actualResolutionDate = tarjeta.actualResolutionDate,
-        resolutionNotes = tarjeta.resolutionNotes,
         images = images.map { it.toDomainModel() },
         comments = comments.map { it.toDomainModel() },
         history = history.map { it.toDomainModel() },

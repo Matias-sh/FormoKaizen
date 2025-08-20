@@ -24,7 +24,7 @@ interface TarjetasApi {
     suspend fun getTarjetaById(@Path("id") id: Int): Response<TarjetaRojaDto>
     
     @POST("tarjetas/")
-    suspend fun createTarjeta(@Body request: CreateTarjetaRequest): Response<TarjetaRojaDto>
+    suspend fun createTarjeta(@Body request: CreateTarjetaRequestDto): Response<TarjetaRojaDto>
     
     @PUT("tarjetas/{id}/")
     suspend fun updateTarjeta(
@@ -57,6 +57,12 @@ interface TarjetasApi {
     
     @GET("tarjetas/dashboard/stats/")
     suspend fun getDashboardStats(): Response<DashboardStatsResponse>
+    
+    @GET("tarjetas/validate-numero/{numero}/")
+    suspend fun validateNumero(
+        @Path("numero") numero: String,
+        @Query("exclude_id") excludeId: Int? = null
+    ): Response<ValidationResponse>
 }
 
 data class PaginatedResponse<T>(
@@ -68,22 +74,21 @@ data class PaginatedResponse<T>(
 )
 
 data class UpdateTarjetaRequest(
-    val title: String?,
-    val description: String?,
-    val priority: String?,
+    val numero: String?,
+    val fecha: String?,
     val sector: String?,
+    val descripcion: String?,
     val motivo: String?,
+    @SerializedName("quien_lo_hizo")
+    val quienLoHizo: String?,
     @SerializedName("destino_final")
     val destinoFinal: String?,
+    @SerializedName("fecha_final")
+    val fechaFinal: String?,
+    val priority: String?,
     @SerializedName("assigned_to_id")
     val assignedToId: Int?,
-    @SerializedName("estimated_resolution_date")
-    val estimatedResolutionDate: String?,
-    val status: String?,
-    @SerializedName("resolution_notes")
-    val resolutionNotes: String?,
-    @SerializedName("actual_resolution_date")
-    val actualResolutionDate: String?
+    val status: String?
 )
 
 data class AddCommentRequest(
@@ -104,12 +109,18 @@ data class DashboardStatsResponse(
     val statusStats: Map<String, Int>,
     @SerializedName("priority_stats")
     val priorityStats: Map<String, Int>,
-    @SerializedName("category_stats")
-    val categoryStats: List<CategoryStatsDto>
+    @SerializedName("sector_stats")
+    val sectorStats: List<SectorStatsDto>
 )
 
-data class CategoryStatsDto(
+data class SectorStatsDto(
     val name: String,
     val total: Int,
     val open: Int
+)
+
+data class ValidationResponse(
+    @SerializedName("is_valid")
+    val isValid: Boolean,
+    val message: String? = null
 )

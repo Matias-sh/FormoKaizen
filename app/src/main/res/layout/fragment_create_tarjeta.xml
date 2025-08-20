@@ -42,39 +42,83 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Title -->
+                    <!-- Fecha y Numero Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="horizontal">
+
+                        <!-- Fecha -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilFecha"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:hint="Fecha">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFecha"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="date"
+                                android:focusable="false"
+                                android:clickable="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Numero -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilNumero"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:hint="Número">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etNumero"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <!-- Sector -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilTitle"
+                        android:id="@+id/tilSector"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:hint="@string/tarjeta_title"
-                        app:counterEnabled="true"
-                        app:counterMaxLength="100">
+                        android:hint="Sector">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTitle"
+                            android:id="@+id/etSector"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textCapSentences"
-                            android:maxLength="100" />
+                            android:inputType="textCapWords" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Description -->
+                    <!-- Descripción -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilDescription"
+                        android:id="@+id/tilDescripcion"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:hint="@string/tarjeta_description"
+                        android:hint="Descripción"
                         app:counterEnabled="true"
                         app:counterMaxLength="500">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDescription"
+                            android:id="@+id/etDescripcion"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="top"
@@ -84,24 +128,91 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Category Dropdown -->
+                    <!-- Razón/Motivo -->
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilCategory"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:id="@+id/tilMotivo"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:hint="@string/tarjeta_category">
+                        android:hint="Razón/Motivo"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="300">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/actvCategory"
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etMotivo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="none" />
+                            android:gravity="top"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:lines="3"
+                            android:maxLength="300" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Priority -->
+                    <!-- Bottom section with who, destination and date -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="vertical">
+
+                        <!-- Quién lo hizo -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilQuienLoHizo"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:hint="Quién lo hizo">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etQuienLoHizo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPersonName" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Destino final -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilDestinoFinal"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:hint="Destino final">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etDestinoFinal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapSentences" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!-- Fecha final -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilFechaFinal"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:hint="Fecha final (Opcional)">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFechaFinal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="date"
+                                android:focusable="false"
+                                android:clickable="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <!-- Priority (moved to bottom, simplified) -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -153,42 +264,6 @@
                             app:chipBackgroundColor="@color/priority_critical" />
 
                     </com.google.android.material.chip.ChipGroup>
-
-                    <!-- Sector/Area -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilSector"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:hint="@string/tarjeta_sector">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etSector"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textCapWords" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Root Cause -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tilRootCause"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:hint="@string/tarjeta_reason">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etRootCause"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="top"
-                            android:inputType="textCapSentences|textMultiLine"
-                            android:lines="3" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <!-- Photo Section -->
                     <TextView

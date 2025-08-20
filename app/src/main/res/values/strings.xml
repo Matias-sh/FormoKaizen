@@ -27,14 +27,16 @@
     
     <!-- Tarjetas -->
     <string name="new_tarjeta">Nueva Tarjeta</string>
-    <string name="tarjeta_title">Título</string>
-    <string name="tarjeta_description">Descripción</string>
-    <string name="tarjeta_category">Categoría</string>
+    <string name="tarjeta_numero">Número</string>
+    <string name="tarjeta_fecha">Fecha</string>
+    <string name="tarjeta_sector">Sector</string>
+    <string name="tarjeta_descripcion">Descripción</string>
+    <string name="tarjeta_motivo">Razón/Motivo</string>
+    <string name="tarjeta_quien_lo_hizo">Quién lo hizo</string>
+    <string name="tarjeta_destino_final">Destino final</string>
+    <string name="tarjeta_fecha_final">Fecha final</string>
     <string name="tarjeta_priority">Prioridad</string>
     <string name="tarjeta_status">Estado</string>
-    <string name="tarjeta_sector">Sector</string>
-    <string name="tarjeta_reason">Motivo/Causa Raíz</string>
-    <string name="tarjeta_solution">Acción Correctiva</string>
     <string name="take_photo">Tomar Foto</string>
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>
@@ -66,6 +68,16 @@
     <string name="success_delete">Eliminado exitosamente</string>
     <string name="no_data">No hay datos disponibles</string>
     <string name="retry">Reintentar</string>
+    
+    <!-- Validation Messages -->
+    <string name="error_numero_required">El número es requerido</string>
+    <string name="error_numero_exists">Este número ya existe</string>
+    <string name="error_fecha_required">La fecha es requerida</string>
+    <string name="error_sector_required">El sector es requerido</string>
+    <string name="error_descripcion_required">La descripción es requerida</string>
+    <string name="error_motivo_required">El motivo es requerido</string>
+    <string name="error_quien_lo_hizo_required">Este campo es requerido</string>
+    <string name="error_destino_final_required">El destino final es requerido</string>
     
     <!-- Permissions -->
     <string name="camera_permission_required">Se requiere permiso de cámara</string>

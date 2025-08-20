@@ -5,30 +5,25 @@ import com.cocido.formokaizen.domain.entities.*
 
 data class TarjetaRojaDto(
     val id: Int,
-    val code: String,
-    val title: String,
-    val description: String,
-    val category: CategoryDto,
-    @SerializedName("work_area")
-    val workArea: WorkAreaDto?,
-    val status: String,
-    val priority: String,
+    val numero: String,
+    val fecha: String,
     val sector: String,
+    val descripcion: String,
     val motivo: String,
+    @SerializedName("quien_lo_hizo")
+    val quienLoHizo: String,
     @SerializedName("destino_final")
     val destinoFinal: String,
+    @SerializedName("fecha_final")
+    val fechaFinal: String?,
     @SerializedName("created_by")
     val createdBy: UserDto,
     @SerializedName("assigned_to")
     val assignedTo: UserDto?,
     @SerializedName("approved_by")
     val approvedBy: UserDto?,
-    @SerializedName("estimated_resolution_date")
-    val estimatedResolutionDate: String?,
-    @SerializedName("actual_resolution_date")
-    val actualResolutionDate: String?,
-    @SerializedName("resolution_notes")
-    val resolutionNotes: String?,
+    val status: String,
+    val priority: String,
     val images: List<TarjetaImageDto>?,
     val comments: List<TarjetaCommentDto>?,
     val history: List<TarjetaHistoryDto>?,
@@ -84,22 +79,23 @@ data class TarjetaHistoryDto(
     val description: String
 )
 
-data class CreateTarjetaRequest(
-    val title: String,
-    val description: String,
-    @SerializedName("category_id")
-    val categoryId: Int,
-    @SerializedName("work_area_id")
-    val workAreaId: Int?,
-    val priority: String,
+data class CreateTarjetaRequestDto(
+    val numero: String,
+    val fecha: String,
     val sector: String,
+    val descripcion: String,
     val motivo: String,
+    @SerializedName("quien_lo_hizo")
+    val quienLoHizo: String,
     @SerializedName("destino_final")
     val destinoFinal: String,
+    @SerializedName("fecha_final")
+    val fechaFinal: String?,
+    val priority: String,
     @SerializedName("assigned_to_id")
     val assignedToId: Int?,
-    @SerializedName("estimated_resolution_date")
-    val estimatedResolutionDate: String?
+    @SerializedName("image_uris")
+    val imageUris: List<String> = emptyList()
 )
 
 data class ApproveTarjetaRequest(
@@ -110,11 +106,17 @@ data class ApproveTarjetaRequest(
 fun TarjetaRojaDto.toDomainModel(): TarjetaRoja {
     return TarjetaRoja(
         id = id,
-        code = code,
-        title = title,
-        description = description,
-        category = category.toDomainModel(),
-        workArea = workArea?.toDomainModel(),
+        numero = numero,
+        fecha = fecha,
+        sector = sector,
+        descripcion = descripcion,
+        motivo = motivo,
+        quienLoHizo = quienLoHizo,
+        destinoFinal = destinoFinal,
+        fechaFinal = fechaFinal,
+        createdBy = createdBy.toDomainModel(),
+        assignedTo = assignedTo?.toDomainModel(),
+        approvedBy = approvedBy?.toDomainModel(),
         status = when (status.lowercase()) {
             "open" -> TarjetaStatus.OPEN
             "pending_approval" -> TarjetaStatus.PENDING_APPROVAL
@@ -132,15 +134,6 @@ fun TarjetaRojaDto.toDomainModel(): TarjetaRoja {
             "critical" -> TarjetaPriority.CRITICAL
             else -> TarjetaPriority.MEDIUM
         },
-        sector = sector,
-        motivo = motivo,
-        destinoFinal = destinoFinal,
-        createdBy = createdBy.toDomainModel(),
-        assignedTo = assignedTo?.toDomainModel(),
-        approvedBy = approvedBy?.toDomainModel(),
-        estimatedResolutionDate = estimatedResolutionDate,
-        actualResolutionDate = actualResolutionDate,
-        resolutionNotes = resolutionNotes,
         images = images?.map { it.toDomainModel() } ?: emptyList(),
         comments = comments?.map { it.toDomainModel() } ?: emptyList(),
         history = history?.map { it.toDomainModel() } ?: emptyList(),
