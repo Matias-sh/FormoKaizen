@@ -1,0 +1,47 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120"
+    android:tint="?attr/colorOnSurfaceVariant">
+  
+  <!-- Document background -->
+  <path
+      android:pathData="M30,20 L90,20 Q94,20 94,24 L94,96 Q94,100 90,100 L30,100 Q26,100 26,96 L26,24 Q26,20 30,20 Z"
+      android:fillColor="#F5F5F5"
+      android:strokeColor="?attr/colorOnSurfaceVariant"
+      android:strokeWidth="1"/>
+  
+  <!-- Document lines -->
+  <path
+      android:pathData="M35,35 L85,35"
+      android:strokeColor="?attr/colorOnSurfaceVariant"
+      android:strokeWidth="1"/>
+  
+  <path
+      android:pathData="M35,45 L75,45"
+      android:strokeColor="?attr/colorOnSurfaceVariant"
+      android:strokeWidth="1"/>
+      
+  <path
+      android:pathData="M35,55 L80,55"
+      android:strokeColor="?attr/colorOnSurfaceVariant"
+      android:strokeWidth="1"/>
+      
+  <path
+      android:pathData="M35,65 L70,65"
+      android:strokeColor="?attr/colorOnSurfaceVariant"
+      android:strokeWidth="1"/>
+      
+  <!-- Empty message -->
+  <path
+      android:pathData="M45,80 L75,80"
+      android:strokeColor="?attr/colorOnSurfaceVariant"
+      android:strokeWidth="2"/>
+      
+  <path
+      android:pathData="M50,90 L70,90"
+      android:strokeColor="?attr/colorOnSurfaceVariant"
+      android:strokeWidth="2"/>
+      
+</vector>

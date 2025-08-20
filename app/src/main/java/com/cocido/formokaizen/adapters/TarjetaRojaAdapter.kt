@@ -5,7 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.cocido.formokaizen.databinding.ItemTarjetaRojaBinding
-import com.cocido.formokaizen.models.TarjetaRoja
+// import com.cocido.formokaizen.models.TarjetaRoja
+
+// Temporary placeholder to avoid compilation errors
+data class TarjetaRoja(
+    val sector: String = "",
+    val descripcion: String = "",
+    val motivo: String = "",
+    val fotoUri: String = ""
+)
 
 class TarjetaRojaAdapter(
     private val tarjetas: List<TarjetaRoja>
@@ -25,8 +33,10 @@ class TarjetaRojaAdapter(
         holder.binding.txtMotivo.text = "Motivo: ${tarjeta.motivo}"
 
         // Mostrar la foto
-        val bitmap = BitmapFactory.decodeFile(tarjeta.fotoUri)
-        holder.binding.imgFoto.setImageBitmap(bitmap)
+        if (tarjeta.fotoUri.isNotEmpty()) {
+            val bitmap = BitmapFactory.decodeFile(tarjeta.fotoUri)
+            holder.binding.imgFoto.setImageBitmap(bitmap)
+        }
     }
 
     override fun getItemCount(): Int = tarjetas.size

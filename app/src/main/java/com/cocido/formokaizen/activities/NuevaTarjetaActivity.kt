@@ -11,22 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.cocido.formokaizen.databinding.ActivityNuevaTarjetaBinding
-import com.cocido.formokaizen.db.AppDatabase
-import com.cocido.formokaizen.models.TarjetaRoja
+// import com.cocido.formokaizen.db.AppDatabase
+// import com.cocido.formokaizen.models.TarjetaRoja
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
 class NuevaTarjetaActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNuevaTarjetaBinding
-    private lateinit var db: AppDatabase
+    // private lateinit var db: AppDatabase
     private var fotoUri: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNuevaTarjetaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "formokaizen_db").build()
+        // db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "formokaizen_db").build()
 
         binding.btnCapturarFoto.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -44,21 +44,23 @@ class NuevaTarjetaActivity : AppCompatActivity() {
                 Toast.makeText(this, "Todos los campos y la foto son obligatorios", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            lifecycleScope.launch {
-                db.tarjetaRojaDao().insert(
-                    TarjetaRoja(
-                        sector = sector,
-                        descripcion = desc,
-                        motivo = motivo,
-                        destinoFinal = destino,
-                        fotoUri = foto
-                    )
-                )
-                runOnUiThread {
-                    Toast.makeText(this@NuevaTarjetaActivity, "Tarjeta guardada", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-            }
+            // TODO: Implement saving with new database architecture
+            Toast.makeText(this@NuevaTarjetaActivity, "Save feature temporarily disabled", Toast.LENGTH_SHORT).show()
+            // lifecycleScope.launch {
+            //     db.tarjetaRojaDao().insert(
+            //         TarjetaRoja(
+            //             sector = sector,
+            //             descripcion = desc,
+            //             motivo = motivo,
+            //             destinoFinal = destino,
+            //             fotoUri = foto
+            //         )
+            //     )
+            //     runOnUiThread {
+            //         Toast.makeText(this@NuevaTarjetaActivity, "Tarjeta guardada", Toast.LENGTH_SHORT).show()
+            //         finish()
+            //     }
+            // }
         }
     }
 

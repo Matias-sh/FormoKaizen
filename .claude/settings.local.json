@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(django-admin startproject:*)",
+      "Bash(.gradlew build)",
+      "Bash(gradlew.bat build:*)",
+      "Bash(.gradlew clean build)",
+      "Bash(gradlew.bat clean:*)",
+      "Bash(./gradlew:*)",
+      "Bash(.gradlew:*)",
+      "Bash(gradlew.bat assembleDebug:*)",
+      "Bash(rm:*)",
+      "Bash(timeout:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": [],
+    "additionalDirectories": [
+      "C:\\c\\Users\\MatiB\\AndroidStudioProjects"
+    ]
+  }
+}

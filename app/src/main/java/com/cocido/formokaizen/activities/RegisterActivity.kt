@@ -7,19 +7,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.cocido.formokaizen.databinding.ActivityRegisterBinding
-import com.cocido.formokaizen.db.AppDatabase
-import com.cocido.formokaizen.models.User
+// import com.cocido.formokaizen.db.AppDatabase
+// import com.cocido.formokaizen.models.User
 import kotlinx.coroutines.launch
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var db: AppDatabase
+    // private lateinit var db: AppDatabase
     private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "formokaizen_db").build()
+        // db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "formokaizen_db").build()
 
         binding.btnRegister.setOnClickListener {
             val name = binding.inputName.text.toString()
@@ -29,17 +29,19 @@ class RegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            lifecycleScope.launch {
-                val count = db.userDao().userCount()
-                val role = if (count == 0) "admin" else "user"
-                val user = User(name = name, email = email, password = pass, role = role)
-                db.userDao().insert(user)
-                runOnUiThread {
-                    Toast.makeText(this@RegisterActivity, "Registrado correctamente", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
-                    finish()
-                }
-            }
+            // TODO: Implement user registration with new database architecture
+            Toast.makeText(this@RegisterActivity, "Registration feature temporarily disabled", Toast.LENGTH_SHORT).show()
+            // lifecycleScope.launch {
+            //     val count = db.userDao().userCount()
+            //     val role = if (count == 0) "admin" else "user"
+            //     val user = User(name = name, email = email, password = pass, role = role)
+            //     db.userDao().insert(user)
+            //     runOnUiThread {
+            //         Toast.makeText(this@RegisterActivity, "Registrado correctamente", Toast.LENGTH_SHORT).show()
+            //         startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+            //         finish()
+            //     }
+            // }
         }
 
         binding.txtGoLogin.setOnClickListener {

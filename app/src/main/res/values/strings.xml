@@ -1,3 +1,73 @@
 <resources>
     <string name="app_name">FormoKaizen</string>
+    <string name="app_subtitle">Sistema de Mejora Continua</string>
+    
+    <!-- Auth -->
+    <string name="login">Iniciar Sesión</string>
+    <string name="register">Registrarse</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar Contraseña</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="username">Usuario</string>
+    <string name="employee_id">ID Empleado</string>
+    <string name="phone">Teléfono</string>
+    <string name="department">Departamento</string>
+    <string name="position">Cargo</string>
+    <string name="profile">Perfil</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_tarjetas">Tarjetas</string>
+    <string name="nav_teams">Equipos</string>
+    <string name="nav_notifications">Notificaciones</string>
+    <string name="nav_profile">Perfil</string>
+    
+    <!-- Tarjetas -->
+    <string name="new_tarjeta">Nueva Tarjeta</string>
+    <string name="tarjeta_title">Título</string>
+    <string name="tarjeta_description">Descripción</string>
+    <string name="tarjeta_category">Categoría</string>
+    <string name="tarjeta_priority">Prioridad</string>
+    <string name="tarjeta_status">Estado</string>
+    <string name="tarjeta_sector">Sector</string>
+    <string name="tarjeta_reason">Motivo/Causa Raíz</string>
+    <string name="tarjeta_solution">Acción Correctiva</string>
+    <string name="take_photo">Tomar Foto</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="approve">Aprobar</string>
+    <string name="reject">Rechazar</string>
+    
+    <!-- Status -->
+    <string name="status_open">Abierta</string>
+    <string name="status_pending_approval">Pendiente de Aprobación</string>
+    <string name="status_approved">Aprobada</string>
+    <string name="status_in_progress">En Progreso</string>
+    <string name="status_resolved">Resuelta</string>
+    <string name="status_closed">Cerrada</string>
+    <string name="status_rejected">Rechazada</string>
+    
+    <!-- Priority -->
+    <string name="priority_low">Baja</string>
+    <string name="priority_medium">Media</string>
+    <string name="priority_high">Alta</string>
+    <string name="priority_critical">Crítica</string>
+    
+    <!-- Messages -->
+    <string name="loading">Cargando...</string>
+    <string name="error_network">Error de conexión</string>
+    <string name="error_generic">Ha ocurrido un error</string>
+    <string name="success_save">Guardado exitosamente</string>
+    <string name="success_delete">Eliminado exitosamente</string>
+    <string name="no_data">No hay datos disponibles</string>
+    <string name="retry">Reintentar</string>
+    
+    <!-- Permissions -->
+    <string name="camera_permission_required">Se requiere permiso de cámara</string>
+    <string name="storage_permission_required">Se requiere permiso de almacenamiento</string>
 </resources>

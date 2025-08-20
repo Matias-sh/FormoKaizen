@@ -1,7 +1,30 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme for dark mode. -->
     <style name="Base.Theme.FormoKaizen" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Primary colors (dark mode) -->
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_dark</item>
+        
+        <!-- Secondary colors (dark mode) -->
+        <item name="colorSecondary">@color/accent_light</item>
+        <item name="colorOnSecondary">@color/on_secondary</item>
+        
+        <!-- Surface colors (dark mode) -->
+        <item name="colorSurface">#121212</item>
+        <item name="colorOnSurface">#E0E0E0</item>
+        <item name="colorSurfaceVariant">#2C2C2C</item>
+        <item name="colorOnSurfaceVariant">#BDBDBD</item>
+        
+        <!-- Background colors (dark mode) -->
+        <item name="android:colorBackground">#0D0D0D</item>
+        <item name="colorOnBackground">#E0E0E0</item>
+        
+        <!-- Error colors -->
+        <item name="colorError">@color/error</item>
+        
+        <!-- Status bar (dark mode) -->
+        <item name="android:statusBarColor">#0D0D0D</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

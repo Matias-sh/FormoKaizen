@@ -1,0 +1,40 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+  
+  <!-- Background circle -->
+  <path
+      android:pathData="M60,60m-50,0a50,50 0,1 1,100 0a50,50 0,1 1,-100 0"
+      android:fillColor="@color/on_primary"/>
+  
+  <!-- Inner circle with primary color -->
+  <path
+      android:pathData="M60,60m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0"
+      android:fillColor="@color/primary"/>
+  
+  <!-- Kaizen symbol - continuous improvement arrow -->
+  <path
+      android:pathData="M35,50L85,50L80,45L85,50L80,55"
+      android:strokeColor="@color/on_primary"
+      android:strokeWidth="3"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"
+      android:fillColor="@android:color/transparent"/>
+      
+  <!-- Improvement arrow -->
+  <path
+      android:pathData="M35,65L85,65L80,60L85,65L80,70"
+      android:strokeColor="@color/on_primary"
+      android:strokeWidth="3"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"
+      android:fillColor="@android:color/transparent"/>
+      
+  <!-- Central connecting element -->
+  <path
+      android:pathData="M60,49.5A8,8 0,1 1,60 65.5A8,8 0,1 1,60 49.5z"
+      android:fillColor="@color/on_primary"/>
+      
+</vector>
