@@ -288,16 +288,20 @@ class CreateTarjetaFragment : Fragment() {
         // Get selected priority
         val priority = getSelectedPriority()
         
+        // Convert date format from DD/MM/YYYY to YYYY-MM-DD
+        val fechaConverted = convertDateFormat(fecha)
+        val fechaFinalConverted = if (fechaFinal.isEmpty()) null else convertDateFormat(fechaFinal)
+        
         // Create tarjeta request
         val request = CreateTarjetaRequest(
             numero = numero,
-            fecha = fecha,
+            fecha = fechaConverted,
             sector = sector,
             descripcion = descripcion,
             motivo = motivo,
             quienLoHizo = quienLoHizo,
             destinoFinal = destinoFinal,
-            fechaFinal = if (fechaFinal.isEmpty()) null else fechaFinal,
+            fechaFinal = fechaFinalConverted,
             priority = priority,
             assignedToId = null,
             imageUris = selectedPhotos
@@ -305,6 +309,17 @@ class CreateTarjetaFragment : Fragment() {
         
         // Create tarjeta
         tarjetasViewModel.createTarjeta(request)
+    }
+    
+    private fun convertDateFormat(dateString: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val date = inputFormat.parse(dateString)
+            outputFormat.format(date!!)
+        } catch (e: Exception) {
+            dateString
+        }
     }
     
     private fun getSelectedPriority(): Priority {

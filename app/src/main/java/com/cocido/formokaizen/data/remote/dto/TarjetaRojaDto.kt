@@ -68,13 +68,10 @@ data class TarjetaCommentDto(
 data class TarjetaHistoryDto(
     val id: Int,
     @SerializedName("tarjeta_id")
-    val tarjetaId: Int,
-    @SerializedName("user_id")
-    val userId: Int,
-    @SerializedName("user_name")
-    val userName: String,
+    val tarjetaId: Int? = null,
+    val user: UserDto,
     val action: String,
-    val field: String?,
+    val field: String? = null,
     @SerializedName("old_value")
     val oldValue: String?,
     @SerializedName("new_value")
@@ -173,14 +170,35 @@ fun TarjetaCommentDto.toDomainModel(): TarjetaComment {
 fun TarjetaHistoryDto.toDomainModel(): TarjetaHistory {
     return TarjetaHistory(
         id = id,
-        tarjetaId = tarjetaId,
-        userId = userId,
-        userName = userName,
-        action = TarjetaAction.valueOf(action),
+        tarjetaId = tarjetaId ?: 0,
+        userId = user.id,
+        userName = user.fullName ?: "${user.firstName} ${user.lastName}".trim(),
+        action = when (action.uppercase()) {
+            "CREATED" -> TarjetaAction.CREATED
+            "UPDATED" -> TarjetaAction.UPDATED
+            "STATUS_CHANGED" -> TarjetaAction.STATUS_CHANGED
+            "ASSIGNED" -> TarjetaAction.ASSIGNED
+            "UNASSIGNED" -> TarjetaAction.UNASSIGNED
+            "PRIORITY_CHANGED" -> TarjetaAction.PRIORITY_CHANGED
+            "CATEGORY_CHANGED" -> TarjetaAction.CATEGORY_CHANGED
+            "COMMENTED" -> TarjetaAction.COMMENTED
+            "ATTACHMENT_ADDED" -> TarjetaAction.ATTACHMENT_ADDED
+            "ATTACHMENT_REMOVED" -> TarjetaAction.ATTACHMENT_REMOVED
+            "DUE_DATE_CHANGED" -> TarjetaAction.DUE_DATE_CHANGED
+            "RESOLVED" -> TarjetaAction.RESOLVED
+            "REOPENED" -> TarjetaAction.REOPENED
+            "ARCHIVED" -> TarjetaAction.ARCHIVED
+            else -> TarjetaAction.UPDATED
+        },
         field = field,
         oldValue = oldValue,
         newValue = newValue,
-        timestamp = java.time.LocalDateTime.parse(timestamp),
+        timestamp = try {
+            java.time.LocalDateTime.parse(timestamp)
+        } catch (e: java.time.format.DateTimeParseException) {
+            // Handle timestamp with timezone
+            java.time.ZonedDateTime.parse(timestamp).toLocalDateTime()
+        },
         description = description
     )
 }
