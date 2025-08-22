@@ -5,15 +5,16 @@ import com.cocido.formokaizen.domain.entities.*
 
 data class TarjetaRojaDto(
     val id: Int,
+    val code: String?,
     val numero: String,
     val fecha: String,
     val sector: String,
     val descripcion: String,
-    val motivo: String,
+    val motivo: String? = null,
     @SerializedName("quien_lo_hizo")
     val quienLoHizo: String,
     @SerializedName("destino_final")
-    val destinoFinal: String,
+    val destinoFinal: String? = null,
     @SerializedName("fecha_final")
     val fechaFinal: String?,
     @SerializedName("created_by")
@@ -24,9 +25,12 @@ data class TarjetaRojaDto(
     val approvedBy: UserDto?,
     val status: String,
     val priority: String,
-    val images: List<TarjetaImageDto>?,
-    val comments: List<TarjetaCommentDto>?,
-    val history: List<TarjetaHistoryDto>?,
+    val category: CategoryDto?,
+    @SerializedName("work_area")
+    val workArea: WorkAreaDto?,
+    val images: List<TarjetaImageDto>? = null,
+    val comments: List<TarjetaCommentDto>? = null,
+    val history: List<TarjetaHistoryDto>? = null,
     @SerializedName("created_at")
     val createdAt: String,
     @SerializedName("updated_at")
@@ -110,9 +114,9 @@ fun TarjetaRojaDto.toDomainModel(): TarjetaRoja {
         fecha = fecha,
         sector = sector,
         descripcion = descripcion,
-        motivo = motivo,
+        motivo = motivo ?: "",
         quienLoHizo = quienLoHizo,
-        destinoFinal = destinoFinal,
+        destinoFinal = destinoFinal ?: "",
         fechaFinal = fechaFinal,
         createdBy = createdBy.toDomainModel(),
         assignedTo = assignedTo?.toDomainModel(),

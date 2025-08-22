@@ -5,6 +5,9 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.cocido.formokaizen.data.local.dao.*
 import com.cocido.formokaizen.data.local.entities.*
+import com.cocido.formokaizen.domain.entities.SyncStatus
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Database(
     entities = [
@@ -82,6 +85,8 @@ abstract class FormoKaizenDatabase : RoomDatabase() {
 
 class Converters {
     
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    
     @TypeConverter
     fun fromSyncStatus(value: SyncStatus): String {
         return value.name
@@ -94,6 +99,16 @@ class Converters {
         } catch (e: IllegalArgumentException) {
             SyncStatus.SYNCED
         }
+    }
+    
+    @TypeConverter
+    fun fromLocalDateTime(value: LocalDateTime?): String? {
+        return value?.format(formatter)
+    }
+    
+    @TypeConverter
+    fun toLocalDateTime(value: String?): LocalDateTime? {
+        return value?.let { LocalDateTime.parse(it, formatter) }
     }
     
 }

@@ -12,19 +12,19 @@ class CreateTarjetaUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(tarjeta: TarjetaRoja): Flow<Resource<TarjetaRoja>> {
         // Validaciones
-        if (tarjeta.title.isBlank()) {
-            return flowOf(Resource.Error("El título es requerido"))
+        if (tarjeta.numero.isBlank()) {
+            return flowOf(Resource.Error("El número es requerido"))
         }
         
-        if (tarjeta.title.length < 5) {
-            return flowOf(Resource.Error("El título debe tener al menos 5 caracteres"))
+        if (tarjeta.numero.length < 3) {
+            return flowOf(Resource.Error("El número debe tener al menos 3 caracteres"))
         }
         
-        if (tarjeta.description.isBlank()) {
+        if (tarjeta.descripcion.isBlank()) {
             return flowOf(Resource.Error("La descripción es requerida"))
         }
         
-        if (tarjeta.description.length < 10) {
+        if (tarjeta.descripcion.length < 10) {
             return flowOf(Resource.Error("La descripción debe tener al menos 10 caracteres"))
         }
         

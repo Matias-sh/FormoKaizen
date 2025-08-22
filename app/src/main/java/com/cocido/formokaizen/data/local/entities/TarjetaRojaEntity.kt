@@ -2,6 +2,7 @@ package com.cocido.formokaizen.data.local.entities
 
 import androidx.room.*
 import com.cocido.formokaizen.domain.entities.*
+import java.time.LocalDateTime
 
 @Entity(
     tableName = "tarjetas_rojas",
@@ -36,7 +37,7 @@ import com.cocido.formokaizen.domain.entities.*
 )
 data class TarjetaRojaEntity(
     @PrimaryKey
-    val id: Int,
+    val id: Long,
     val numero: String,
     val fecha: String,
     val sector: String,
@@ -45,9 +46,9 @@ data class TarjetaRojaEntity(
     val quienLoHizo: String,
     val destinoFinal: String,
     val fechaFinal: String?,
-    val createdById: Int,
-    val assignedToId: Int?,
-    val approvedById: Int?,
+    val createdById: Long,
+    val assignedToId: Long?,
+    val approvedById: Long?,
     val status: String,
     val priority: String,
     val createdAt: String,
@@ -115,13 +116,13 @@ data class TarjetaRojaWithRelations(
 )
 data class TarjetaImageEntity(
     @PrimaryKey
-    val id: Int,
-    val tarjetaId: Int,
+    val id: Long,
+    val tarjetaId: Long,
     val imageUrl: String,
     val localImagePath: String?, // For offline images
     val description: String,
-    val uploadedById: Int,
-    val uploadedAt: String,
+    val uploadedById: Long,
+    val uploadedAt: LocalDateTime,
     val syncStatus: SyncStatus = SyncStatus.SYNCED
 )
 
@@ -139,12 +140,12 @@ data class TarjetaImageEntity(
 )
 data class TarjetaCommentEntity(
     @PrimaryKey
-    val id: Int,
-    val tarjetaId: Int,
+    val id: Long,
+    val tarjetaId: Long,
     val comment: String,
     val isInternal: Boolean,
-    val userId: Int,
-    val createdAt: String,
+    val userId: Long,
+    val createdAt: LocalDateTime,
     val syncStatus: SyncStatus = SyncStatus.SYNCED
 )
 
@@ -162,22 +163,22 @@ data class TarjetaCommentEntity(
 )
 data class TarjetaHistoryEntity(
     @PrimaryKey
-    val id: Int,
-    val tarjetaId: Int,
-    val userId: Int,
+    val id: Long,
+    val tarjetaId: Long,
+    val userId: Long,
     val userName: String,
     val action: String,
     val field: String?,
     val oldValue: String?,
     val newValue: String?,
-    val timestamp: String,
+    val timestamp: LocalDateTime,
     val description: String,
     val syncStatus: SyncStatus = SyncStatus.SYNCED
 )
 
 fun TarjetaRojaWithRelations.toDomainModel(): TarjetaRoja {
     return TarjetaRoja(
-        id = tarjeta.id,
+        id = tarjeta.id.toInt(),
         numero = tarjeta.numero,
         fecha = tarjeta.fecha,
         sector = tarjeta.sector,
@@ -220,35 +221,35 @@ fun TarjetaRojaWithRelations.toDomainModel(): TarjetaRoja {
 
 fun TarjetaImageEntity.toDomainModel(): TarjetaImage {
     return TarjetaImage(
-        id = id,
+        id = id.toInt(),
         imageUrl = imageUrl,
         description = description,
-        uploadedBy = User(id = uploadedById, username = "", email = "", firstName = "", lastName = "", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = ""),
-        uploadedAt = uploadedAt
+        uploadedBy = User(id = uploadedById.toInt(), username = "", email = "", firstName = "", lastName = "", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = uploadedAt.toString()),
+        uploadedAt = uploadedAt.toString()
     )
 }
 
 fun TarjetaCommentEntity.toDomainModel(): TarjetaComment {
     return TarjetaComment(
-        id = id,
+        id = id.toInt(),
         comment = comment,
         isInternal = isInternal,
-        user = User(id = userId, username = "", email = "", firstName = "", lastName = "", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = ""),
-        createdAt = createdAt
+        user = User(id = userId.toInt(), username = "", email = "", firstName = "", lastName = "", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = createdAt.toString()),
+        createdAt = createdAt.toString()
     )
 }
 
 fun TarjetaHistoryEntity.toDomainModel(): TarjetaHistory {
     return TarjetaHistory(
-        id = id,
-        tarjetaId = tarjetaId,
-        userId = userId,
+        id = id.toInt(),
+        tarjetaId = tarjetaId.toInt(),
+        userId = userId.toInt(),
         userName = userName,
         action = TarjetaAction.valueOf(action),
         field = field,
         oldValue = oldValue,
         newValue = newValue,
-        timestamp = java.time.LocalDateTime.parse(timestamp),
+        timestamp = timestamp,
         description = description
     )
 }

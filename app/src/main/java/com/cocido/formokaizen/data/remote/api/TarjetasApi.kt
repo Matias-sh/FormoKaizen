@@ -20,6 +20,13 @@ interface TarjetasApi {
         @Query("search") search: String? = null
     ): Response<PaginatedResponse<TarjetaRojaDto>>
     
+    @GET("tarjetas/my/")
+    suspend fun getMyTarjetas(
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = 20,
+        @Query("status") status: String? = null
+    ): Response<PaginatedResponse<TarjetaRojaDto>>
+    
     @GET("tarjetas/{id}/")
     suspend fun getTarjetaById(@Path("id") id: Int): Response<TarjetaRojaDto>
     

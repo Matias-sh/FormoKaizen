@@ -207,27 +207,24 @@ class SearchRepositoryImpl @Inject constructor() : SearchRepository {
         val baseTarjetas = listOf(
             TarjetaRoja(
                 id = 1,
-                code = "TR-001",
-                title = "Problema de calidad en línea 2",
-                description = "Se detectaron productos defectuosos",
-                category = Category(id = 1, name = "Calidad", description = "Problemas de calidad", color = "#FF5722", icon = "quality", isActive = true, workAreas = emptyList(), createdBy = null, createdAt = "", tarjetasCount = 0, openTarjetasCount = 0),
-                status = TarjetaStatus.OPEN,
-                priority = TarjetaPriority.HIGH,
+                numero = "TR-001",
+                fecha = "2024-01-15",
                 sector = "Producción",
-                workArea = WorkArea(id = 1, name = "Línea 2", description = "Línea de producción 2", categoryId = 1, responsible = null, isActive = true, createdAt = ""),
+                descripcion = "Se detectaron productos defectuosos",
                 motivo = "Defecto de calidad",
+                quienLoHizo = "Juan Pérez",
                 destinoFinal = "Corrección del proceso",
-                createdAt = LocalDateTime.now().minusDays(2).toString(),
-                updatedAt = LocalDateTime.now().minusDays(1).toString(),
-                estimatedResolutionDate = LocalDateTime.now().plusDays(3).toString(),
-                actualResolutionDate = null,
+                fechaFinal = null,
                 createdBy = User(id = 1, username = "jperez", email = "juan.perez@empresa.com", firstName = "Juan", lastName = "Pérez", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = ""),
                 assignedTo = User(id = 2, username = "mgonzalez", email = "maria.gonzalez@empresa.com", firstName = "María", lastName = "González", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = ""),
                 approvedBy = null,
-                resolutionNotes = null,
+                status = TarjetaStatus.OPEN,
+                priority = TarjetaPriority.HIGH,
                 images = emptyList(),
                 comments = emptyList(),
                 history = emptyList(),
+                createdAt = LocalDateTime.now().minusDays(2).toString(),
+                updatedAt = LocalDateTime.now().minusDays(1).toString(),
                 approvedAt = null,
                 closedAt = null,
                 isOverdue = false,
@@ -235,22 +232,19 @@ class SearchRepositoryImpl @Inject constructor() : SearchRepository {
             ),
             TarjetaRoja(
                 id = 2,
-                code = "TR-002",
-                title = "Falta de capacitación en seguridad",
-                description = "Los nuevos empleados necesitan capacitación",
-                category = Category(id = 2, name = "Seguridad", description = "Problemas de seguridad", color = "#FF9800", icon = "security", isActive = true, workAreas = emptyList(), createdBy = null, createdAt = "", tarjetasCount = 0, openTarjetasCount = 0),
-                workArea = WorkArea(id = 2, name = "RRHH", description = "Área de recursos humanos", categoryId = 2, responsible = null, isActive = true, createdAt = ""),
-                status = TarjetaStatus.IN_PROGRESS,
-                priority = TarjetaPriority.MEDIUM,
+                numero = "TR-002",
+                fecha = "2024-01-16",
                 sector = "Recursos Humanos",
+                descripcion = "Los nuevos empleados necesitan capacitación",
                 motivo = "Capacitación",
+                quienLoHizo = "María González",
                 destinoFinal = "Personal capacitado",
+                fechaFinal = null,
                 createdBy = User(id = 2, username = "mgonzalez", email = "maria.gonzalez@empresa.com", firstName = "María", lastName = "González", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = ""),
                 assignedTo = User(id = 3, username = "cperez", email = "carlos.perez@empresa.com", firstName = "Carlos", lastName = "Pérez", role = UserRole.USER, employeeId = null, phone = null, department = null, position = null, avatar = null, isActive = true, createdAt = ""),
                 approvedBy = null,
-                estimatedResolutionDate = LocalDateTime.now().plusDays(7).toString(),
-                actualResolutionDate = null,
-                resolutionNotes = null,
+                status = TarjetaStatus.IN_PROGRESS,
+                priority = TarjetaPriority.MEDIUM,
                 images = emptyList(),
                 comments = emptyList(),
                 history = emptyList(),
@@ -266,18 +260,17 @@ class SearchRepositoryImpl @Inject constructor() : SearchRepository {
         // Aplicar filtros
         return baseTarjetas.filter { tarjeta ->
             val matchesQuery = filter.query?.let { query ->
-                tarjeta.title.contains(query, ignoreCase = true) ||
-                tarjeta.description.contains(query, ignoreCase = true) ||
-                tarjeta.category.name.contains(query, ignoreCase = true)
+                tarjeta.numero.contains(query, ignoreCase = true) ||
+                tarjeta.descripcion.contains(query, ignoreCase = true) ||
+                tarjeta.sector.contains(query, ignoreCase = true)
             } ?: true
 
             val matchesStatus = filter.status.isEmpty() || filter.status.contains(tarjeta.status)
             val matchesPriority = filter.priority.isEmpty() || filter.priority.contains(tarjeta.priority)
-            val matchesCategory = filter.categories.isEmpty() || filter.categories.contains(tarjeta.category.id)
             val matchesAssignedTo = filter.assignedToIds.isEmpty() || 
                 (tarjeta.assignedTo != null && filter.assignedToIds.contains(tarjeta.assignedTo.id))
 
-            matchesQuery && matchesStatus && matchesPriority && matchesCategory && matchesAssignedTo
+            matchesQuery && matchesStatus && matchesPriority && matchesAssignedTo
         }
     }
 }

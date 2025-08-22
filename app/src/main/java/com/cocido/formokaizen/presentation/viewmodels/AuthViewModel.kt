@@ -17,7 +17,8 @@ class AuthViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
-    private val logoutUseCase: LogoutUseCase
+    private val logoutUseCase: LogoutUseCase,
+    private val authRepository: com.cocido.formokaizen.domain.repository.AuthRepository
 ) : ViewModel() {
     
     private val _loginState = MutableStateFlow<Resource<AuthToken>?>(null)
@@ -135,9 +136,7 @@ class AuthViewModel @Inject constructor(
     }
     
     fun isLoggedIn(): Boolean {
-        // Necesitamos usar el repository directamente para verificar el token
-        // Agregar esta funcionalidad al use case sería lo ideal
-        return true // Temporalmente return true para que compile
+        return authRepository.isLoggedIn()
     }
 }
 

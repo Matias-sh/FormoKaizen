@@ -48,13 +48,11 @@ class MainActivity : AppCompatActivity() {
             splashScreen.setKeepOnScreenCondition { false }
             
             // Navigate based on auth status
-            if (isLoggedIn) {
-                // User is logged in, stay on home
-                // Navigation controller will handle this
-            } else {
-                // Navigate to login
+            if (!isLoggedIn) {
+                // Navigate to login if not authenticated
                 navController.navigate(R.id.splashFragment)
             }
+            // If logged in, stay on the current destination (home)
         }
     }
     

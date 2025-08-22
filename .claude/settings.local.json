@@ -32,7 +32,8 @@
     "deny": [],
     "ask": [],
     "additionalDirectories": [
-      "C:\\c\\Users\\MatiB\\AndroidStudioProjects"
+      "C:\\c\\Users\\MatiB\\AndroidStudioProjects",
+      "C:\\"
     ]
   }
 }

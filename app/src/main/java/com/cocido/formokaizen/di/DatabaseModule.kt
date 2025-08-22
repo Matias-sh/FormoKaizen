@@ -3,7 +3,6 @@ package com.cocido.formokaizen.di
 import android.content.Context
 import androidx.room.Room
 import com.cocido.formokaizen.data.local.FormoKaizenDatabase
-import com.cocido.formokaizen.data.local.dao.CategoriesDao
 import com.cocido.formokaizen.data.local.dao.TarjetasDao
 import com.cocido.formokaizen.data.local.dao.UserDao
 import dagger.Module
@@ -32,9 +31,6 @@ object DatabaseModule {
     
     @Provides
     fun provideUserDao(database: FormoKaizenDatabase): UserDao = database.userDao()
-    
-    @Provides
-    fun provideCategoriesDao(database: FormoKaizenDatabase): CategoriesDao = database.categoriesDao()
     
     @Provides
     fun provideTarjetasDao(database: FormoKaizenDatabase): TarjetasDao = database.tarjetasDao()
